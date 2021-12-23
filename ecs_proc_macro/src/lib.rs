@@ -56,13 +56,13 @@ pub fn system(
     // Extract the function body
     let body = match input.sig.output {
         syn::ReturnType::Default => {
-            let body = input.block.clone();
+            let body = input.block;
             quote! {
                 #body
             }
         }
         _ => {
-            let body = input.block.clone();
+            let body = input.block;
             quote! {
                 #body
                 return;
@@ -109,14 +109,13 @@ fn string_to_camel_case(string: String) -> String {
     for c in string.chars() {
         if c == '_' {
             first = true;
+        } else if first {
+            result.push(c.to_ascii_uppercase());
+            first = false;
         } else {
-            if first {
-                result.push(c.to_ascii_uppercase());
-                first = false;
-            } else {
-                result.push(c.to_ascii_lowercase());
-            }
+            result.push(c.to_ascii_lowercase());
         }
+        
     }
     result
 }
