@@ -59,12 +59,19 @@ fn main() {
     // Get the time 
     let start = std::time::Instant::now();
 
+    // Create a new world
     let mut world = world::World::new();
+
+    // Initialize some components
 
     world.init_storage::<Position>();
     world.init_storage::<SomeRandomComponent>();
 
+    // Add some systems
+
     world.add_system(SystemSomeRandomSystem);
+
+    // Run the benchmark
 
     for i in 0..1000{
         benchmark(&mut world);
@@ -74,6 +81,8 @@ fn main() {
             println!("Num entities: {}", world.get_entity_count());
         }
     }
+
+    // Test removing systems
 
     world.remove_system::<SystemSomeRandomSystem>();
 

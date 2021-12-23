@@ -15,10 +15,10 @@ pub type Entity = usize;
 /// A world also provides a way to manage systems.
 pub struct World{
     // Storage contains all the components for each entity.
-    pub storage: Vec<ComponentStorage>,
+    storage: Vec<ComponentStorage>,
 
     // Systems Controller contains all the systems that are added to the world, as well as handles the systems
-    pub systems_controller: Option<SystemController>,
+    systems_controller: Option<SystemController>,
     
     // Entity counter stores the next available entity.
     entity_counter: usize,
