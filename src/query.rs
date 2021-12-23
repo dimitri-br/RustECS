@@ -1,20 +1,19 @@
 use std::any::TypeId;
 
-
 use crate::{storage::Component, world::Entity};
 
 /// A query is a way to find entities that have certain components.
-/// 
+///
 /// A query is a collection of component types, and a collection of entities that have those components.
 pub struct Query {
     pub components: Vec<TypeId>,
     pub entities: Vec<Entity>,
 }
 
-impl Query{
+impl Query {
     /// Create a new query.
     pub fn new() -> Self {
-        Self{
+        Self {
             components: Vec::new(),
             entities: Vec::new(),
         }
@@ -41,7 +40,7 @@ impl Query{
             if has_components {
                 entities.push(entity);
             }
-        }        
+        }
 
         entities
     }

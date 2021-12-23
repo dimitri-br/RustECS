@@ -1,5 +1,5 @@
-use syn::{parse_macro_input, Ident, DeriveInput};
 use quote::quote;
+use syn::{parse_macro_input, DeriveInput, Ident};
 
 #[proc_macro_derive(Component, attributes(component))]
 pub fn component_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
@@ -23,7 +23,6 @@ pub fn component_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStre
     gen.into()
 }
 
-
 // Define a macro for systems. It should be used like this:
 //
 // ```
@@ -39,14 +38,20 @@ pub fn component_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStre
 // The macro will generate a struct with the name of the system and a function
 // with the name of update
 #[proc_macro_attribute]
-pub fn system(args: proc_macro::TokenStream, input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn system(
+    args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
     let _ = parse_macro_input!(args as syn::AttributeArgs);
     let input = parse_macro_input!(input as syn::ItemFn);
 
     let name = input.sig.ident;
 
     // Convert the name to camel case, and add the prefix "System"
-    let system_name = Ident::new(&format!("System{}", string_to_camel_case(name.to_string())), name.span());
+    let system_name = Ident::new(
+        &format!("System{}", string_to_camel_case(name.to_string())),
+        name.span(),
+    );
 
     // Extract the function body
     let body = match input.sig.output {
@@ -55,7 +60,7 @@ pub fn system(args: proc_macro::TokenStream, input: proc_macro::TokenStream) -> 
             quote! {
                 #body
             }
-        },
+        }
         _ => {
             let body = input.block.clone();
             quote! {
@@ -65,11 +70,10 @@ pub fn system(args: proc_macro::TokenStream, input: proc_macro::TokenStream) -> 
         }
     };
 
-
-    let struct_name = quote! { 
+    let struct_name = quote! {
         /// # #system_name
-        /// 
-        /// An automatically generated struct for the system.       
+        ///
+        /// An automatically generated struct for the system.
         pub struct #system_name;
     };
 
@@ -81,7 +85,7 @@ pub fn system(args: proc_macro::TokenStream, input: proc_macro::TokenStream) -> 
                 // Auto-generated code from #name
                 #body
             }
-            
+
             /// Get the type id of the system.
             fn get_type_id(&self) -> std::any::TypeId {
                 std::any::TypeId::of::<#system_name>()
@@ -95,22 +99,21 @@ pub fn system(args: proc_macro::TokenStream, input: proc_macro::TokenStream) -> 
         #update_func
     };
 
-
     // return the input
     gen.into()
 }
 
-fn string_to_camel_case(string: String) -> String{
+fn string_to_camel_case(string: String) -> String {
     let mut result = String::new();
     let mut first = true;
-    for c in string.chars(){
-        if c == '_'{
+    for c in string.chars() {
+        if c == '_' {
             first = true;
-        }else{
-            if first{
+        } else {
+            if first {
                 result.push(c.to_ascii_uppercase());
                 first = false;
-            }else{
+            } else {
                 result.push(c.to_ascii_lowercase());
             }
         }

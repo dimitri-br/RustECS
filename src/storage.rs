@@ -1,13 +1,11 @@
 use std::any::TypeId;
 
-
 use crate::world::Entity;
-
 
 // Define Component
 //
-// Component is a trait that defines a component. 
-// 
+// Component is a trait that defines a component.
+//
 // A component is a blob of data that is attached to an entity.
 //
 // It does not contain any logic, and is instead used to define data used by systems.
@@ -29,14 +27,14 @@ pub struct ComponentStorage {
 
 impl ComponentStorage {
     pub fn new() -> Self {
-        Self{
+        Self {
             components: Vec::new(),
             type_id: TypeId::of::<()>(),
         }
     }
 
     /// Initialize the component storage with default values.
-    /// 
+    ///
     /// This is used when creating a new entity.
     pub fn init(&mut self) {
         self.components.push(None);
@@ -54,10 +52,10 @@ impl ComponentStorage {
 
     /// Get the component from the given entity.
     pub fn get<T: 'static + Component>(&self, index: Entity) -> Option<&T> {
-        if let Some(v) = self.components[index].as_ref().map(|c| c.get()){
-            if let Some(component) = v.downcast_ref::<T>(){
+        if let Some(v) = self.components[index].as_ref().map(|c| c.get()) {
+            if let Some(component) = v.downcast_ref::<T>() {
                 return Some(component);
-            }else{
+            } else {
                 panic!("Component type mismatch");
             }
         }
@@ -67,10 +65,10 @@ impl ComponentStorage {
 
     /// Get the component from the given entity, but mutable.
     pub fn get_mut<T: 'static + Component>(&mut self, index: Entity) -> Option<&mut T> {
-        if let Some(v) = self.components[index].as_mut().map(|c| c.get_mut()){
-            if let Some(component) = v.downcast_mut::<T>(){
+        if let Some(v) = self.components[index].as_mut().map(|c| c.get_mut()) {
+            if let Some(component) = v.downcast_mut::<T>() {
                 return Some(component);
-            }else{
+            } else {
                 panic!("Component type mismatch");
             }
         }
@@ -84,12 +82,11 @@ impl ComponentStorage {
 
     /// Check if the entity has a component.
     pub fn has_component(&self, index: Entity, component_id: TypeId) -> bool {
-        if let Some(v) = self.components[index].as_ref().map(|c| c.get()){
-            if v.type_id() == component_id{
+        if let Some(v) = self.components[index].as_ref().map(|c| c.get()) {
+            if v.type_id() == component_id {
                 return true;
             }
         }
         false
     }
 }
-
