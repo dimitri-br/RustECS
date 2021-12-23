@@ -1,5 +1,6 @@
 use std::any::TypeId;
 
+
 use crate::{storage::Component, world::Entity};
 
 /// A query is a way to find entities that have certain components.
@@ -30,9 +31,9 @@ impl Query{
         let mut entities = Vec::new();
         for entity in 0..world.get_entity_count() {
             let mut has_components = true;
-            for component in &self.components {
+            for component in self.components.iter() {
                 // Check if the entity has the component
-                if !world.has(entity, *component) {
+                if !world.has_component(entity, *component) {
                     has_components = false;
                     break;
                 }

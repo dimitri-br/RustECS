@@ -83,10 +83,12 @@ impl ComponentStorage {
     }
 
     /// Check if the entity has a component.
-    pub fn has(&self, index: Entity, component: TypeId) -> bool {
+    pub fn has_component(&self, index: Entity, component_id: TypeId) -> bool {
         if let Some(v) = self.components[index].as_ref().map(|c| c.get()){
-            if v.type_id() == component {
+            if v.type_id() == component_id{
                 return true;
+            }else{
+                panic!("Component type mismatch");
             }
         }
         false

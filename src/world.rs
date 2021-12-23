@@ -68,9 +68,9 @@ impl World{
     }
 
     /// Check if an entity has a component.
-    pub fn has(&self, entity: Entity, component: TypeId) -> bool{
+    pub fn has_component(&self, entity: Entity, component_id: TypeId) -> bool{
         for storage in &self.storage{
-            if storage.has(entity, component){
+            if storage.has_component(entity, component_id){
                 return true;
             }
         }
