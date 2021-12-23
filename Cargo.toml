@@ -1,0 +1,18 @@
+[package]
+name = "ecs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace]
+
+members = [
+    "ecs_proc_macro",
+]
+
+[dependencies]
+ecs_proc_macro = { path = "ecs_proc_macro" }
+
+crossbeam = "0.8"
+rayon = "1.5"
