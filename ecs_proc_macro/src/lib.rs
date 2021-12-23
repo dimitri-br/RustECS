@@ -67,6 +67,8 @@ pub fn system(args: proc_macro::TokenStream, input: proc_macro::TokenStream) -> 
 
 
     let struct_name = quote! { 
+        /// # #system_name
+        /// 
         /// An automatically generated struct for the system.       
         pub struct #system_name;
     };
@@ -74,11 +76,13 @@ pub fn system(args: proc_macro::TokenStream, input: proc_macro::TokenStream) -> 
     // add the update function
     let update_func = quote! {
         impl crate::system::System for #system_name{
+            /// Update the system.
             fn update(&mut self, world: std::sync::Arc<std::sync::Mutex<&mut crate::world::World>>) {
                 // Auto-generated code from #name
                 #body
             }
-
+            
+            /// Get the type id of the system.
             fn get_type_id(&self) -> std::any::TypeId {
                 std::any::TypeId::of::<#system_name>()
             }

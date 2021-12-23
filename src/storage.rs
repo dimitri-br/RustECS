@@ -87,8 +87,6 @@ impl ComponentStorage {
         if let Some(v) = self.components[index].as_ref().map(|c| c.get()){
             if v.type_id() == component_id{
                 return true;
-            }else{
-                panic!("Component type mismatch");
             }
         }
         false
